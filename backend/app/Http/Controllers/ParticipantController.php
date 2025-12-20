@@ -9,31 +9,49 @@ class ParticipantController extends Controller
 {
     public function index()
     {
-        return response()->json(Participant::all());
+        return response()->json(
+            Participant::with('kelas')->get()
+        );
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'nama' => 'required',
-            'email' => 'required|email|unique:pesertas',
-            'no_hp' => 'required',
-            'level' => 'required',
-            'jadwal' => 'required'
+            'nama' => 'required|string',
+            'email' => 'required|email|unique:participants',
+            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+            'umur' => 'required|integer',
+            'kelas_id' => 'required|exists:kelas,id',
+            'status' => 'required|in:Aktif,Nonaktif'
         ]);
 
-        return response()->json(Participant::create($data), 201);
+        return response()->json(
+            Participant::create($data),
+            201
+        );
     }
 
     public function show($id)
     {
-        return response()->json(Participant::findOrFail($id));
+        return response()->json(
+            Participant::with('kelas')->findOrFail($id)
+        );
     }
 
     public function update(Request $request, $id)
     {
         $participant = Participant::findOrFail($id);
-        $participant->update($participant->all());
+
+        $data = $request->validate([
+            'nama' => 'required|string',
+            'email' => 'required|email|unique:participants,email,' . $id,
+            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+            'umur' => 'required|integer',
+            'kelas_id' => 'required|exists:kelas,id',
+            'status' => 'required|in:Aktif,Nonaktif'
+        ]);
+
+        $participant->update($data);
 
         return response()->json($participant);
     }
