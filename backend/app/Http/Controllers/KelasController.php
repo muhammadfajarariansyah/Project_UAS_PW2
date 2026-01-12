@@ -52,6 +52,7 @@ class KelasController extends Controller
         return response()->json($kelas);
     }
 
+
     public function destroy($id)
     {
         Kelas::destroy($id);

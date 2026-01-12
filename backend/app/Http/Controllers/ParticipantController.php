@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Participant;
+use App\Models\Participants;
 use Illuminate\Http\Request;
 
 class ParticipantController extends Controller
@@ -10,7 +10,7 @@ class ParticipantController extends Controller
     public function index()
     {
         return response()->json(
-            Participant::with('kelas')->get()
+            Participants::with('kelas')->get()
         );
     }
 
@@ -26,7 +26,7 @@ class ParticipantController extends Controller
         ]);
 
         return response()->json(
-            Participant::create($data),
+            Participants::create($data),
             201
         );
     }
@@ -34,13 +34,13 @@ class ParticipantController extends Controller
     public function show($id)
     {
         return response()->json(
-            Participant::with('kelas')->findOrFail($id)
+            Participants::with('kelas')->findOrFail($id)
         );
     }
 
     public function update(Request $request, $id)
     {
-        $participant = Participant::findOrFail($id);
+        $participant = Participants::findOrFail($id);
 
         $data = $request->validate([
             'nama' => 'required|string',
@@ -56,9 +56,26 @@ class ParticipantController extends Controller
         return response()->json($participant);
     }
 
+    // Tambahkan fungsi ini di ParticipantController.php
+    public function removeFromClass($id)
+    {
+        try {
+            $participant = Participants::findOrFail($id);
+            $participant->kelas_id = null; // Menghapus hubungan kelas tanpa menghapus peserta
+            $participant->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Peserta berhasil dikeluarkan dari kelas'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        }
+    }
+
     public function destroy($id)
     {
-        Participant::destroy($id);
+        Participants::destroy($id);
         return response()->json(['message' => 'Data berhasil dihapus']);
     }
 }

@@ -17,6 +17,6 @@ class Kelas extends Model
 
     public function participants()
     {
-        return $this->hasMany(Participant::class);
+        return $this->hasMany(Participants::class);
     }
 }

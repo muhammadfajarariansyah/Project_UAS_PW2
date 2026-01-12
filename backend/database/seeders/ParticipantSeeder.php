@@ -4,12 +4,13 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Participant;
+use App\Models\Participants;
 
 class ParticipantSeeder extends Seeder
 {
     public function run(): void
     {
-        Participant::insert([
+        Participants::insert([
             [
                 'nama' => 'Andi Pratama',
                 'email' => 'andi@gmail.com',

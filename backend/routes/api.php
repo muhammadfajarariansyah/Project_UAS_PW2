@@ -11,3 +11,5 @@ Route::apiResource('kelas', KelasController::class);
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+Route::put('participants/{id}', [ParticipantController::class, 'update']);
+Route::post('participants/{id}/remove', [ParticipantController::class, 'removeFromClass']);
