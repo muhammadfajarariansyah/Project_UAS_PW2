@@ -5,7 +5,7 @@ import ConfirmModal from '../confirmModal';
 const API_BASE_URL = 'http://localhost:8000/api';
 
 const Kelas = ({ kelas, openModal, fetchKelas, onSelectKelas }) => {
-  // --- STATE & DATA LOGIC ---
+  //State for Delete Modal
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedKelasId, setSelectedKelasId] = useState(null);
 
@@ -16,7 +16,7 @@ const Kelas = ({ kelas, openModal, fetchKelas, onSelectKelas }) => {
     advanced: kelas.filter(k => k.level === 'Advanced').length
   };
 
-  // --- HANDLER FUNCTIONS ---
+  //Handler Functions
   const handleDeleteClick = (e, id) => {
     e.stopPropagation(); 
     setSelectedKelasId(id);

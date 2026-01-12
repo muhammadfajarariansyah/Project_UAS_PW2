@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const API_BASE_URL = 'http://localhost:8000/api';
 
 const KelasForm = ({ item, onClose, onSuccess }) => {
-    // Fitur: Inisialisasi State Form
+    //Inisialisasi State Form
     const [formData, setFormData] = useState(
         item || {
             nama_kelas: '',
@@ -13,7 +13,7 @@ const KelasForm = ({ item, onClose, onSuccess }) => {
         }
     );
 
-    // Fitur: Handler Simpan Data (Create/Update)
+    //Handler Simpan Data (Create/Update)
     const handleSubmit = async () => {
         if (!formData.nama_kelas || !formData.nama_pengajar) {
             alert("Peringatan: Nama Kelas dan Nama Pengajar wajib diisi!");
@@ -44,12 +44,12 @@ const KelasForm = ({ item, onClose, onSuccess }) => {
     return (
         <div className="modal-overlay">
             <div className="modal-content">
-                {/* Fitur: Judul Modal Dinamis */}
+                {/*Judul Modal Dinamis */}
                 <h3 className="modal-title">
                     {item ? 'Edit' : 'Tambah'} Kelas
                 </h3>
                 
-                {/* Fitur: Input Field Nama & Pengajar */}
+                {/*Input Field Nama & Pengajar */}
                 <div className="form-group">
                     <label className="form-label">Nama Kelas <span style={{color: 'red'}}>*</span></label>
                     <input
@@ -72,7 +72,7 @@ const KelasForm = ({ item, onClose, onSuccess }) => {
                     />
                 </div>
 
-                {/* Fitur: Seleksi Level & Status */}
+                {/*Seleksi Level & Status */}
                 <div className="form-group">
                     <label className="form-label">Level</label>
                     <select

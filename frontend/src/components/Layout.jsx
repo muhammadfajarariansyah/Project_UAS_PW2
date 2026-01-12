@@ -2,9 +2,10 @@ import React from 'react';
 import { Search, Users, LogOut, Menu, X } from 'lucide-react';
 import LogoApp from '../assets/logo-academy.png';
 
-const Layout = ({ children, sidebarOpen, setSidebarOpen, activePage, setActivePage, searchQuery, setSearchQuery }) => {
+
+const Layout = ({ children, sidebarOpen, setSidebarOpen, activePage, setActivePage, searchQuery, setSearchQuery, onLogout }) => {
     
-    // Logika Header & Search Dinamis
+    //Header & Search Dinamis
     const getHeaderTitle = () => {
         switch (activePage) {
             case 'dashboard': return 'Beranda';
@@ -72,7 +73,10 @@ const Layout = ({ children, sidebarOpen, setSidebarOpen, activePage, setActivePa
                         </button>
                     </nav>
 
-                    <button className="sidebar-logout">
+                    <button 
+                        className="sidebar-logout" 
+                        onClick={onLogout}
+                    >
                         <LogOut className="w-4 h-4" />
                         <span>Logout</span>
                     </button>

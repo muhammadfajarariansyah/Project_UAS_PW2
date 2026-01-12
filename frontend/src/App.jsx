@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './style.css';
 
-// Import Layout
+// Import Components & Pages
 import Layout from './components/Layout';
-
-// Import Pages
+import Login from './pages/login';
 import Dashboard from './pages/Dashboard';
 import Kelas from './pages/kelas/Kelas';
 import KelasForm from './pages/kelas/KelasForm';
@@ -12,10 +11,13 @@ import Participants from './pages/participant/Participants';
 import ParticipantForm from './pages/participant/ParticipantForm';
 import KelasDetail from './pages/kelas/KelasDetail';
 
-// API Configuration
 const API_BASE_URL = 'http://localhost:8000/api';
 
 const App = () => {
+  //auth state
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  //app state
   const [activePage, setActivePage] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -26,6 +28,7 @@ const App = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [selectedKelas, setSelectedKelas] = useState(null);
 
+  //data fetching functions
   const fetchParticipants = useCallback(async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/participants`);
@@ -47,17 +50,32 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    fetchParticipants();
-    fetchKelas();
-  }, [fetchParticipants, fetchKelas]);
+    if (isAuthenticated) {
+      fetchParticipants();
+      fetchKelas();
+    }
+  }, [isAuthenticated, fetchParticipants, fetchKelas]);
 
-  // Statistik tetap dihitung dari data asli (bukan filter) agar angka total akurat
+  //logic for dashboard stats
   const stats = {
     activeParticipants: participants.filter(p => p.status === 'Aktif').length,
     totalParticipants: participants.length,
     totalKelas: kelas.length
   };
 
+  const filteredParticipants = participants.filter(p => 
+      p.nama.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      p.email.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredKelas = kelas.filter(k => 
+      k.nama_kelas.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      k.nama_pengajar.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredRecentParticipants = filteredParticipants.slice(0, 3);
+
+  //modal control functions
   const openModal = (type, item = null) => {
     setModalType(type);
     setSelectedItem(item);
@@ -75,18 +93,10 @@ const App = () => {
     fetchKelas();
   };
 
-  // Logika Filter
-  const filteredParticipants = participants.filter(p => 
-      p.nama.toLowerCase().includes(searchQuery.toLowerCase()) || 
-      p.email.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const filteredKelas = kelas.filter(k => 
-      k.nama_kelas.toLowerCase().includes(searchQuery.toLowerCase()) || 
-      k.nama_pengajar.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const filteredRecentParticipants = filteredParticipants.slice(0, 3);
+  //render login if not authenticated
+  if (!isAuthenticated) {
+    return <Login onLoginSuccess={() => setIsAuthenticated(true)} />;
+  }
 
   return (
     <Layout
@@ -98,44 +108,41 @@ const App = () => {
       setSearchQuery={setSearchQuery}
       filteredKelas={filteredKelas}
       filteredParticipants={filteredParticipants}
+      onLogout={() => setIsAuthenticated(false)} 
     >
-      {/* Dashboard Page */}
       {activePage === 'dashboard' && (
         <Dashboard 
-            stats={stats} 
-            recentParticipants={filteredRecentParticipants} 
+          stats={stats} 
+          recentParticipants={filteredRecentParticipants} 
         />
       )}
 
-      {/* Kelas Page */}
       {activePage === 'kelas' && (
         !selectedKelas ? (
-            <Kelas 
-                kelas={filteredKelas} 
-                openModal={openModal}
-                fetchKelas={fetchKelas}
-                onSelectKelas={(item) => setSelectedKelas(item)}
-            />
+          <Kelas 
+            kelas={filteredKelas} 
+            openModal={openModal}
+            fetchKelas={fetchKelas}
+            onSelectKelas={(item) => setSelectedKelas(item)}
+          />
         ) : (
-            <KelasDetail 
-                selectedKelas={selectedKelas}
-                participants={participants}
-                onBack={() => setSelectedKelas(null)}
-            />
+          <KelasDetail 
+            selectedKelas={selectedKelas}
+            participants={participants}
+            onBack={() => setSelectedKelas(null)}
+          />
         )
       )}
 
-      {/* Participants Page */}
       {activePage === 'peserta' && (
-          <Participants 
-              participants={filteredParticipants} 
-              kelas={kelas}
-              openModal={openModal}
-              fetchParticipants={fetchParticipants}
-          />
+        <Participants 
+          participants={filteredParticipants} 
+          kelas={kelas}
+          openModal={openModal}
+          fetchParticipants={fetchParticipants}
+        />
       )}
 
-      {/* Modals */}
       {showModal && modalType === 'kelas' && (
         <KelasForm
           item={selectedItem}

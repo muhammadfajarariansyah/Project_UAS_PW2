@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const API_BASE_URL = 'http://localhost:8000/api';
 
 const ParticipantForm = ({ item, onClose, onSuccess, kelas }) => {
-    // Fitur: Inisialisasi State Form Peserta
+    //Inisialisasi State Form Peserta
     const [formData, setFormData] = useState(
         item || {
             nama: '',
@@ -15,7 +15,7 @@ const ParticipantForm = ({ item, onClose, onSuccess, kelas }) => {
         }
     );
 
-    // Fitur: Handler Simpan & Validasi Data
+    //Handler Simpan & Validasi Data
     const handleSubmit = async () => {
         if (!formData.nama || !formData.email || !formData.umur || !formData.kelas_id) {
             alert("Peringatan: Mohon isi Nama, Email, Umur, dan Pilih Kelas!");
@@ -46,12 +46,12 @@ const ParticipantForm = ({ item, onClose, onSuccess, kelas }) => {
     return (
         <div className="modal-overlay">
             <div className="modal-content">
-                {/* Fitur: Judul Modal Dinamis */}
+                {/*Judul Modal Dinamis */}
                 <h3 className="modal-title">
                     {item ? 'Edit' : 'Tambah'} Peserta
                 </h3>
                 
-                {/* Fitur: Form Input Identitas */}
+                {/*Form Input Identitas */}
                 <div className="form-group">
                     <label className="form-label">Nama <span style={{color: 'red'}}>*</span></label>
                     <input
@@ -97,7 +97,7 @@ const ParticipantForm = ({ item, onClose, onSuccess, kelas }) => {
                     />
                 </div>
 
-                {/* Fitur: Dropdown Relasi Kelas */}
+                {/*Dropdown Relasi Kelas */}
                 <div className="form-group">
                     <label className="form-label">Kelas <span style={{color: 'red'}}>*</span></label>
                     <select
@@ -125,7 +125,7 @@ const ParticipantForm = ({ item, onClose, onSuccess, kelas }) => {
                     </select>
                 </div>
                 
-                {/* Fitur: Tombol Kontrol Modal */}
+                {/*Tombol Kontrol Modal */}
                 <div className="modal-actions">
                     <button onClick={onClose} className="btn-cancel">Batal</button>
                     <button onClick={handleSubmit} className="btn-submit">Simpan</button>

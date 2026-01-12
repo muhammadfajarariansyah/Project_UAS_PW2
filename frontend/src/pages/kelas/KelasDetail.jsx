@@ -2,14 +2,14 @@ import React from 'react';
 import { ArrowLeft, User } from 'lucide-react';
 
 const KelasDetail = ({ selectedKelas, participants, onBack }) => {
-  // Fitur: Filter peserta berdasarkan level kelas
+  //Filter peserta berdasarkan level kelas
   const filteredParticipants = participants.filter(
     (p) => p.kelas?.level === selectedKelas.level || p.level === selectedKelas.level
   );
 
   return (
     <div>
-      {/* Fitur: Navigasi Kembali */}
+      {/*Navigasi Kembali */}
       <button 
         onClick={onBack} 
         style={{display: 'flex', alignItems: 'center', gap: '8px', border: 'none', background: 'none', cursor: 'pointer', marginBottom: '1rem', color: '#64748b'}}
@@ -18,7 +18,7 @@ const KelasDetail = ({ selectedKelas, participants, onBack }) => {
       </button>
 
       <div className="table-container" style={{boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)'}}>
-        {/* Fitur: Header Detail Kelas */}
+        {/*Header Detail Kelas */}
         <div className="table-header">
           <div>
             <h2 className="table-title">{selectedKelas.nama_kelas}</h2>
@@ -26,7 +26,7 @@ const KelasDetail = ({ selectedKelas, participants, onBack }) => {
           </div>
         </div>
 
-        {/* Fitur: Tabel Daftar Peserta Terfilter */}
+        {/*Tabel Daftar Peserta Terfilter */}
         <table className="data-table">
           <thead>
             <tr>
@@ -56,7 +56,7 @@ const KelasDetail = ({ selectedKelas, participants, onBack }) => {
                 </tr>
               ))
             ) : (
-              /* Fitur: Empty State */
+              /*Empty State */
               <tr>
                 <td colSpan="3" style={{textAlign: 'center', padding: '2rem'}}>
                   Tidak ada peserta di level ini.

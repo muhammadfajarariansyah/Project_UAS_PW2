@@ -3,7 +3,7 @@ import { Activity, Users, BookOpen } from 'lucide-react';
 
 const Dashboard = ({ stats, recentParticipants }) => (
     <div>
-        {/* Fitur: Kartu Statistik Ringkasan */}
+        {/*Kartu Statistik Ringkasan */}
         <div className="stats-grid">
             <div className="stat-card green">
                 <div className="stat-card-content">
